@@ -2,53 +2,96 @@ using UnityEngine;
 
 public class Pez : MonoBehaviour
 {
-    [Header("Configuración")]
-    public float rapidez = 4;
-    public float radioDePercepción = 2.5f;
-    public float radioDeSeparación = 1;
-    public float fuerzaMáximaDeGiro = 3;
+    [SerializeField]
+    PezConfiguración configuración;
 
-    public float alineaciónPeso = 1;
-    public float cohesiónPeso = 1;
-    public float separaciónPeso = 1;
-    public float objetivoPeso = 1;
-
+    [SerializeField]
     private Vector3 fuerzaDeSeparacion = Vector3.zero;
+    [SerializeField]
     private Vector3 fuerzaDeAlineacion = Vector3.zero;
+    [SerializeField]
     private Vector3 fuerzaDeCohesion = Vector3.zero;
+    [SerializeField]
     private Vector3 fuerzaObjetivo = Vector3.zero;
 
     private Vector3 velocidad = Vector3.zero;
 
-    Transform transformObjetivo;
+    private Transform transformObjetivo;
 
-    Cardumen cardumen;
+    private Cardumen cardumen;
 
-    [Header("A actualizar por el controlador")]
-    public int cantidadDePecesVecinos;
-
-    public void Inicializar(Transform objetivo)
+    private void Start()
     {
-        Cardumen cardumen = Cardumen.Instancia;
-        transformObjetivo = objetivo;
+        cardumen = Cardumen.Instancia;
+        transformObjetivo = cardumen.Objetivo;
+    }
+
+    private void Update()
+    {
+        CalcularFuerzas();
+        Avanzar();
     }
 
     public void Avanzar()
     {
-        Vector3 fuerza = fuerzaDeSeparacion * separaciónPeso +
-                         fuerzaDeAlineacion * alineaciónPeso +
-                         fuerzaDeCohesion * cohesiónPeso +
-                         fuerzaObjetivo * objetivoPeso;
-        velocidad = transform.forward * rapidez;
+        Vector3 fuerza = fuerzaDeSeparacion * configuración.separaciónPeso +
+                         fuerzaDeAlineacion * configuración.alineaciónPeso +
+                         fuerzaDeCohesion * configuración.cohesiónPeso +
+                         fuerzaObjetivo * configuración.objetivoPeso;
+
         velocidad += fuerza * Time.deltaTime;
-        velocidad = velocidad.normalized * rapidez;
+        float rapidezActual = velocidad.magnitude;
+        Vector3 dirección = velocidad.normalized;
+        rapidezActual = Mathf.Clamp(rapidezActual, 0, configuración.rapidez);
+        velocidad = dirección * rapidezActual;
+
         transform.position += velocidad * Time.deltaTime;
         transform.rotation = Quaternion.LookRotation(velocidad);
     }
 
     public void CalcularFuerzas()
     {
-        // Tal vez calcule los peces vecinos y actualice la velocidad con Jobs 
+        Vector3 separaciónSuma = Vector3.zero;
+        Vector3 posicionesSuma = Vector3.zero;
+        Vector3 alineacionSuma = Vector3.zero;
+        int pecesVecinos = 0;
+
+        for (int i = 0; i < cardumen.peces.Count; i++)
+        {
+
+            if (this != cardumen.peces[i])
+            {
+                Vector3 posiciónPezVecino = cardumen.peces[i].transform.position;
+                float sqrDistanciaPezVecino = (transform.position - posiciónPezVecino).sqrMagnitude;
+
+                posicionesSuma += posiciónPezVecino;
+                alineacionSuma += cardumen.peces[i].transform.forward;
+
+                if (sqrDistanciaPezVecino < configuración.sqrDistanciaSeparación)
+                {
+                    float escala = Mathf.Sqrt(sqrDistanciaPezVecino) / Mathf.Sqrt(configuración.sqrDistanciaSeparación);
+                    escala = 1 - escala;
+                    separaciónSuma += -(posiciónPezVecino - transform.position).normalized / escala;
+
+                    pecesVecinos++;
+                }
+            }
+        } 
+
+        if (pecesVecinos > 0)
+        {
+            fuerzaDeSeparacion = separaciónSuma / pecesVecinos;
+            fuerzaDeCohesion = (posicionesSuma / cardumen.peces.Count) - transform.position;
+            fuerzaDeAlineacion = alineacionSuma / cardumen.peces.Count;
+        }
+        else
+        {
+            fuerzaDeSeparacion = Vector3.zero;
+            fuerzaDeCohesion = Vector3.zero;
+            fuerzaDeAlineacion = Vector3.zero;
+        }
+
+        fuerzaObjetivo = (transformObjetivo.position - transform.position).normalized * configuración.rapidez;
     }
 
 }

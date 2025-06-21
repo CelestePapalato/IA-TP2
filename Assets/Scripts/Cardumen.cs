@@ -18,6 +18,8 @@ public class Cardumen : MonoBehaviour
     [Header("No tocar")]
     public List<Pez> peces = new List<Pez>();
 
+    public Transform Objetivo { get => objetivo; }
+
     private void Awake()
     {
         if (Instancia != null && Instancia != this)
