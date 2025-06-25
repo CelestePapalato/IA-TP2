@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f52a32302172943b0e9a020eea8f8e, type: 3}
   m_Name: "SlimeConfiguraci\xF3n"
   m_EditorClassIdentifier: 
+  tiempoDeVida: 100
   rapidez: 10
   "sqrDistanciaSeparaci\xF3n": 7
   "alineaci\xF3nPeso": 1
   "cohesi\xF3nPeso": 1
   "separaci\xF3nPeso": 1
   objetivoPeso: 1
+  "evasi\xF3nPeso": 10
+  "distanciaEvasi\xF3nDeColisi\xF3n": 5
+  "radioDeColisi\xF3n": 2.5
+  "maskObst\xE1culos":
+    serializedVersion: 2
+    m_Bits: 64

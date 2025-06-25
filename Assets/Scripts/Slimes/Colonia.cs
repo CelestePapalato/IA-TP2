@@ -31,20 +31,25 @@ public class Colonia : MonoBehaviour
 
         for (int i = 0; i < cantidadDeSlimes; i++)
         {
-            Vector3 posicion = new Vector3(
-                Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f),
-                Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f),
-                Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f)
-            );
-            Quaternion rotación = Quaternion.Euler(
-                Random.Range(0f, 360f),
-                Random.Range(0f, 360f),
-                Random.Range(0f, 360f)
-            );
-
-            Slime nuevoSlime = Instantiate(slimePrefab, posicion, rotación).GetComponent<Slime>();
-            slimes.Add(nuevoSlime);
+            InstanciarSlime();
         }
+    }
+
+    public void InstanciarSlime()
+    {
+        Vector3 posicion = new Vector3(
+            Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f),
+            Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f),
+            Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f)
+        );
+        Quaternion rotación = Quaternion.Euler(
+            Random.Range(0f, 360f),
+            Random.Range(0f, 360f),
+            Random.Range(0f, 360f)
+        );
+
+        Slime nuevoSlime = Instantiate(slimePrefab, posicion, rotación).GetComponent<Slime>();
+        slimes.Add(nuevoSlime);
     }
 
 }

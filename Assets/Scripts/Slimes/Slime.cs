@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Slime : MonoBehaviour
 {
     [SerializeField]
-    SlimeConfiguración configuración;
+    SlimeConfiguración config;
 
     [SerializeField]
     private Vector3 fuerzaDeSeparacion = Vector3.zero;
@@ -13,12 +14,16 @@ public class Slime : MonoBehaviour
     private Vector3 fuerzaDeCohesion = Vector3.zero;
     [SerializeField]
     private Vector3 fuerzaObjetivo = Vector3.zero;
+    [SerializeField]
+    private Vector3 fuerzaDeEvasión = Vector3.zero;
 
     private Vector3 velocidad = Vector3.zero;
 
     private Transform transformObjetivo;
 
     private Colonia colonia;
+
+    private float tiempoVivo = 0f;
 
     private void Start()
     {
@@ -28,21 +33,35 @@ public class Slime : MonoBehaviour
 
     private void Update()
     {
+        ActualizarTiempoDeVida();
         CalcularFuerzas();
+        CalcularFuerzaDeEvasión();
         Avanzar();
+    }
+
+    private void ActualizarTiempoDeVida()
+    {
+        tiempoVivo += Time.deltaTime;
+        if (tiempoVivo > config.tiempoDeVida)
+        {
+            colonia.slimes.Remove(this);
+            Destroy(gameObject);
+            colonia.InstanciarSlime();
+        }
     }
 
     public void Avanzar()
     {
-        Vector3 fuerza = fuerzaDeSeparacion * configuración.separaciónPeso +
-                         fuerzaDeAlineacion * configuración.alineaciónPeso +
-                         fuerzaDeCohesion * configuración.cohesiónPeso +
-                         fuerzaObjetivo * configuración.objetivoPeso;
+        Vector3 fuerza = fuerzaDeSeparacion * config.separaciónPeso +
+                         fuerzaDeAlineacion * config.alineaciónPeso +
+                         fuerzaDeCohesion * config.cohesiónPeso +
+                         fuerzaObjetivo * config.objetivoPeso +
+                         fuerzaDeEvasión * config.evasiónPeso;
 
         velocidad += fuerza * Time.deltaTime;
         float rapidezActual = velocidad.magnitude;
         Vector3 dirección = velocidad.normalized;
-        rapidezActual = Mathf.Clamp(rapidezActual, 0, configuración.rapidez);
+        rapidezActual = Mathf.Clamp(rapidezActual, 0, config.rapidez);
         velocidad = dirección * rapidezActual;
 
         transform.position += velocidad * Time.deltaTime;
@@ -67,9 +86,9 @@ public class Slime : MonoBehaviour
                 posicionesSuma += posiciónVecino;
                 alineacionSuma += colonia.slimes[i].transform.forward;
 
-                if (sqrDistanciaVecino < configuración.sqrDistanciaSeparación)
+                if (sqrDistanciaVecino < config.sqrDistanciaSeparación)
                 {
-                    float escala = Mathf.Sqrt(sqrDistanciaVecino) / Mathf.Sqrt(configuración.sqrDistanciaSeparación);
+                    float escala = Mathf.Sqrt(sqrDistanciaVecino) / Mathf.Sqrt(config.sqrDistanciaSeparación);
                     escala = 1 - escala;
                     separaciónSuma += -(posiciónVecino - transform.position).normalized / escala;
 
@@ -91,7 +110,61 @@ public class Slime : MonoBehaviour
             fuerzaDeAlineacion = Vector3.zero;
         }
 
-        fuerzaObjetivo = (transformObjetivo.position - transform.position).normalized * configuración.rapidez;
+        fuerzaObjetivo = (transformObjetivo.position - transform.position).normalized * config.rapidez;
     }
 
+
+    // Detección de colisiones
+
+    public void CalcularFuerzaDeEvasión()
+    {
+        if(!EstáEnRiesgoDeColisión())
+        {
+            fuerzaDeEvasión = Vector3.zero;
+            return;
+        }
+
+        fuerzaDeEvasión = ObtenerDirecciónLibre();
+    }
+
+    private bool EstáEnRiesgoDeColisión()
+    {
+        RaycastHit hit;
+
+        Vector3 position = transform.position;
+        Vector3 forward = transform.forward;
+
+        if (Physics.SphereCast(position, 
+            config.radioDeColisión, 
+            forward, out hit, 
+            config.distanciaEvasiónDeColisión, 
+            config.maskObstáculos))
+        {
+            return true;
+        }
+        else { }
+        return false;
+    }
+
+    private Vector3 ObtenerDirecciónLibre()
+    {
+        Vector3[] rayDirections = GeneradorDeDirecciones.GenerarDirecciones();
+
+        Vector3 position = transform.position;
+        Vector3 forward = transform.forward;
+
+        for (int i = 0; i < rayDirections.Length; i++)
+        {
+            Vector3 dir = transform.TransformDirection(rayDirections[i]);
+            Ray ray = new Ray(position, dir);
+            if (!Physics.SphereCast(ray, config.radioDeColisión, 
+                config.distanciaEvasiónDeColisión, 
+                config.maskObstáculos))
+            {
+                return dir;
+            }
+        }
+
+        return forward;
+    }
 }

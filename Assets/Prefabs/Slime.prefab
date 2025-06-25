@@ -90,11 +90,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1901710d38acc54db37dd0c14e3fca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  "configuraci\xF3n": {fileID: 11400000, guid: c2e5364b76e0fbb449ef786fd86f022e, type: 2}
+  config: {fileID: 11400000, guid: c2e5364b76e0fbb449ef786fd86f022e, type: 2}
   fuerzaDeSeparacion: {x: 0, y: 0, z: 0}
   fuerzaDeAlineacion: {x: 0, y: 0, z: 0}
   fuerzaDeCohesion: {x: 0, y: 0, z: 0}
   fuerzaObjetivo: {x: 0, y: 0, z: 0}
+  "fuerzaDeEvasi\xF3n": {x: 0, y: 0, z: 0}
 --- !u!33 &8480231769144348371
 MeshFilter:
   m_ObjectHideFlags: 0
