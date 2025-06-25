@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e7375629963b7154f8a23c7d42f7934a, type: 2}
     - target: {fileID: 919132149155446097, guid: 8ac56b4d15fbbe746a294bd023d09d53, type: 3}
       propertyPath: m_Name
-      value: Pez
+      value: Slime
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -91,6 +91,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   "configuraci\xF3n": {fileID: 11400000, guid: c2e5364b76e0fbb449ef786fd86f022e, type: 2}
+  fuerzaDeSeparacion: {x: 0, y: 0, z: 0}
+  fuerzaDeAlineacion: {x: 0, y: 0, z: 0}
+  fuerzaDeCohesion: {x: 0, y: 0, z: 0}
+  fuerzaObjetivo: {x: 0, y: 0, z: 0}
 --- !u!33 &8480231769144348371
 MeshFilter:
   m_ObjectHideFlags: 0

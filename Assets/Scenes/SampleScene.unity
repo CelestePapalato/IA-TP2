@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 670017795}
   - component: {fileID: 670017794}
   m_Layer: 0
-  m_Name: CARDUMEN
+  m_Name: COLONIA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -403,14 +403,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 670017793}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b869bd672c3d90e48948aea6668b10a4, type: 3}
+  m_Script: {fileID: 11500000, guid: 61caa281ae39fd74e8854f3db9304cac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cantidadDePeces: 30
-  "tama\xF1oDelEspacio": 15
-  pezPrefab: {fileID: 7024844476934555903, guid: dc4d5c1aa62df834a9f5c4d47f1d4837, type: 3}
+  cantidadDeSlimes: 50
+  "tama\xF1oDelEspacio": 50
+  slimePrefab: {fileID: 7024844476934555903, guid: dc4d5c1aa62df834a9f5c4d47f1d4837, type: 3}
   objetivo: {fileID: 2110911015}
-  peces: []
+  slimes: []
 --- !u!4 &670017795
 Transform:
   m_ObjectHideFlags: 0

@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class Pez : MonoBehaviour
+public class Slime : MonoBehaviour
 {
     [SerializeField]
-    PezConfiguración configuración;
+    SlimeConfiguración configuración;
 
     [SerializeField]
     private Vector3 fuerzaDeSeparacion = Vector3.zero;
@@ -18,12 +18,12 @@ public class Pez : MonoBehaviour
 
     private Transform transformObjetivo;
 
-    private Cardumen cardumen;
+    private Colonia colonia;
 
     private void Start()
     {
-        cardumen = Cardumen.Instancia;
-        transformObjetivo = cardumen.Objetivo;
+        colonia = Colonia.Instancia;
+        transformObjetivo = colonia.Objetivo;
     }
 
     private void Update()
@@ -54,35 +54,35 @@ public class Pez : MonoBehaviour
         Vector3 separaciónSuma = Vector3.zero;
         Vector3 posicionesSuma = Vector3.zero;
         Vector3 alineacionSuma = Vector3.zero;
-        int pecesVecinos = 0;
+        int slimesVecinos = 0;
 
-        for (int i = 0; i < cardumen.peces.Count; i++)
+        for (int i = 0; i < colonia.slimes.Count; i++)
         {
 
-            if (this != cardumen.peces[i])
+            if (this != colonia.slimes[i])
             {
-                Vector3 posiciónPezVecino = cardumen.peces[i].transform.position;
-                float sqrDistanciaPezVecino = (transform.position - posiciónPezVecino).sqrMagnitude;
+                Vector3 posiciónVecino = colonia.slimes[i].transform.position;
+                float sqrDistanciaVecino = (transform.position - posiciónVecino).sqrMagnitude;
 
-                posicionesSuma += posiciónPezVecino;
-                alineacionSuma += cardumen.peces[i].transform.forward;
+                posicionesSuma += posiciónVecino;
+                alineacionSuma += colonia.slimes[i].transform.forward;
 
-                if (sqrDistanciaPezVecino < configuración.sqrDistanciaSeparación)
+                if (sqrDistanciaVecino < configuración.sqrDistanciaSeparación)
                 {
-                    float escala = Mathf.Sqrt(sqrDistanciaPezVecino) / Mathf.Sqrt(configuración.sqrDistanciaSeparación);
+                    float escala = Mathf.Sqrt(sqrDistanciaVecino) / Mathf.Sqrt(configuración.sqrDistanciaSeparación);
                     escala = 1 - escala;
-                    separaciónSuma += -(posiciónPezVecino - transform.position).normalized / escala;
+                    separaciónSuma += -(posiciónVecino - transform.position).normalized / escala;
 
-                    pecesVecinos++;
+                    slimesVecinos++;
                 }
             }
         } 
 
-        if (pecesVecinos > 0)
+        if (slimesVecinos > 0)
         {
-            fuerzaDeSeparacion = separaciónSuma / pecesVecinos;
-            fuerzaDeCohesion = (posicionesSuma / cardumen.peces.Count) - transform.position;
-            fuerzaDeAlineacion = alineacionSuma / cardumen.peces.Count;
+            fuerzaDeSeparacion = separaciónSuma / slimesVecinos;
+            fuerzaDeCohesion = (posicionesSuma / colonia.slimes.Count) - transform.position;
+            fuerzaDeAlineacion = alineacionSuma / colonia.slimes.Count;
         }
         else
         {

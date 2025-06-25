@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PezConfiguración", menuName = "Scriptable Objects/PezConfiguración")]
-public class PezConfiguración : ScriptableObject
+[CreateAssetMenu(fileName = "SlimeConfiguración", menuName = "Scriptable Objects/Slime Configuración")]
+public class SlimeConfiguración : ScriptableObject
 {
     public float rapidez = 4;
     public float sqrDistanciaSeparación = 7f;
