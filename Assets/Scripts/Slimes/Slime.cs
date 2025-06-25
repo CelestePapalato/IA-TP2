@@ -142,7 +142,6 @@ public class Slime : MonoBehaviour
         {
             return true;
         }
-        else { }
         return false;
     }
 
