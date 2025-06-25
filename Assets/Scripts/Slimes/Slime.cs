@@ -137,7 +137,7 @@ public class Slime : MonoBehaviour
             return;
         }
 
-        fuerzaDeEvasión = ObtenerDirecciónLibre();
+        fuerzaDeEvasión = ObtenerDirecciónLibre() * config.rapidez;
     }
 
     private bool EstáEnRiesgoDeColisión()
