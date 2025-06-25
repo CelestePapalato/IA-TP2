@@ -33,10 +33,19 @@ public class Slime : MonoBehaviour
 
     private void Update()
     {
+        DetectarContactoConObstáculos();
         ActualizarTiempoDeVida();
         CalcularFuerzas();
         CalcularFuerzaDeEvasión();
         Avanzar();
+    }
+
+    private void DetectarContactoConObstáculos()
+    {
+        if (Physics.OverlapSphere(transform.position, config.radioDeDaño).Length > 0)
+        {
+            Muerte();
+        }
     }
 
     private void ActualizarTiempoDeVida()
@@ -44,10 +53,15 @@ public class Slime : MonoBehaviour
         tiempoVivo += Time.deltaTime;
         if (tiempoVivo > config.tiempoDeVida)
         {
-            colonia.slimes.Remove(this);
-            Destroy(gameObject);
-            colonia.InstanciarSlime();
+            Muerte();
         }
+    }
+
+    private void Muerte()
+    {
+        colonia.slimes.Remove(this);
+        Destroy(gameObject);
+        colonia.InstanciarSlime();
     }
 
     public void Avanzar()
@@ -57,7 +71,7 @@ public class Slime : MonoBehaviour
                          fuerzaDeCohesion * config.cohesiónPeso +
                          fuerzaObjetivo * config.objetivoPeso +
                          fuerzaDeEvasión * config.evasiónPeso;
-
+        fuerza.y = 0f; // Mantener el slime en el plano horizontal
         velocidad += fuerza * Time.deltaTime;
         float rapidezActual = velocidad.magnitude;
         Vector3 dirección = velocidad.normalized;
@@ -113,7 +127,6 @@ public class Slime : MonoBehaviour
         fuerzaObjetivo = (transformObjetivo.position - transform.position).normalized * config.rapidez;
     }
 
-
     // Detección de colisiones
 
     public void CalcularFuerzaDeEvasión()
@@ -134,15 +147,11 @@ public class Slime : MonoBehaviour
         Vector3 position = transform.position;
         Vector3 forward = transform.forward;
 
-        if (Physics.SphereCast(position, 
+        return Physics.SphereCast(position, 
             config.radioDeColisión, 
             forward, out hit, 
             config.distanciaEvasiónDeColisión, 
-            config.maskObstáculos))
-        {
-            return true;
-        }
-        return false;
+            config.maskObstáculos);
     }
 
     private Vector3 ObtenerDirecciónLibre()
@@ -151,6 +160,8 @@ public class Slime : MonoBehaviour
 
         Vector3 position = transform.position;
         Vector3 forward = transform.forward;
+
+        fuerzaDeEvasión = forward;
 
         for (int i = 0; i < rayDirections.Length; i++)
         {
@@ -165,5 +176,22 @@ public class Slime : MonoBehaviour
         }
 
         return forward;
+    }
+
+    void OnDrawGizmos()
+    {
+        Vector3[] direcciones = GeneradorDeDirecciones.GenerarDirecciones();
+        // Asegura que solo se genere una vez en editor (opcional)
+        if (direcciones == null || direcciones.Length == 0)
+            direcciones = GeneradorDeDirecciones.GenerarDirecciones();
+
+        Gizmos.color = Color.yellow;
+
+        foreach (Vector3 dir in direcciones)
+        {
+            Vector3 origen = transform.position;
+            Vector3 destino = origen + dir * config.radioDeDaño;
+            Gizmos.DrawLine(origen, destino);
+        }
     }
 }

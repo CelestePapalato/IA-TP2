@@ -39,13 +39,13 @@ public class Colonia : MonoBehaviour
     {
         Vector3 posicion = new Vector3(
             Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f),
-            Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f),
+            transform.position.y,
             Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f)
         );
         Quaternion rotación = Quaternion.Euler(
+            0f,
             Random.Range(0f, 360f),
-            Random.Range(0f, 360f),
-            Random.Range(0f, 360f)
+            0f
         );
 
         Slime nuevoSlime = Instantiate(slimePrefab, posicion, rotación).GetComponent<Slime>();
