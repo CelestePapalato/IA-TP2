@@ -3,9 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "SlimeConfiguración", menuName = "Scriptable Objects/Slime Configuración")]
 public class SlimeConfiguración : ScriptableObject
 {
-    public float tiempoDeVida = 10f;
-    public float radioDeDaño = 1f;
-
     [Header("Movimiento")]
     public float rapidez = 4;
     public float sqrDistanciaSeparación = 7f;

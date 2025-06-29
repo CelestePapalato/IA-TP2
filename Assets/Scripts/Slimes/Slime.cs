@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Slime : MonoBehaviour
 {
@@ -23,8 +22,6 @@ public class Slime : MonoBehaviour
 
     private Colonia colonia;
 
-    private float tiempoVivo = 0f;
-
     private void Start()
     {
         colonia = Colonia.Instancia;
@@ -33,35 +30,9 @@ public class Slime : MonoBehaviour
 
     private void Update()
     {
-        DetectarContactoConObstáculos();
-        ActualizarTiempoDeVida();
         CalcularFuerzas();
         CalcularFuerzaDeEvasión();
         Avanzar();
-    }
-
-    private void DetectarContactoConObstáculos()
-    {
-        if (Physics.OverlapSphere(transform.position, config.radioDeDaño).Length > 0)
-        {
-            Muerte();
-        }
-    }
-
-    private void ActualizarTiempoDeVida()
-    {
-        tiempoVivo += Time.deltaTime;
-        if (tiempoVivo > config.tiempoDeVida)
-        {
-            Muerte();
-        }
-    }
-
-    private void Muerte()
-    {
-        colonia.slimes.Remove(this);
-        Destroy(gameObject);
-        colonia.InstanciarSlime();
     }
 
     public void Avanzar()
@@ -190,7 +161,7 @@ public class Slime : MonoBehaviour
         foreach (Vector3 dir in direcciones)
         {
             Vector3 origen = transform.position;
-            Vector3 destino = origen + dir * config.radioDeDaño;
+            Vector3 destino = origen + dir * config.radioDeColisión;
             Gizmos.DrawLine(origen, destino);
         }
     }
