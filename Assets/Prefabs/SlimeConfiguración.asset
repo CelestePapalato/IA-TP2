@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96f52a32302172943b0e9a020eea8f8e, type: 3}
   m_Name: "SlimeConfiguraci\xF3n"
   m_EditorClassIdentifier: 
-  rapidez: 5
+  rapidez: 10
   "sqrDistanciaSeparaci\xF3n": 7
-  "distanciaEvasi\xF3nDeColisi\xF3n": 10
-  "radioDeColisi\xF3n": 3
+  "distanciaEvasi\xF3nDeColisi\xF3n": 1
+  "radioDeColisi\xF3n": 1
   "maskObst\xE1culos":
     serializedVersion: 2
     m_Bits: 64

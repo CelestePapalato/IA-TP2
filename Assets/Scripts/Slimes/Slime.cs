@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Slime : MonoBehaviour
+public class Slime: MonoBehaviour
 {
     [SerializeField]
     SlimeConfiguración config;
@@ -60,7 +60,7 @@ public class Slime : MonoBehaviour
         Vector3 alineacionSuma = Vector3.zero;
         int slimesVecinos = 0;
 
-        for (int i = 0; i < colonia.slimes.Count; i++)
+        for (int i = 0;i < colonia.slimes.Count;i++)
         {
 
             if (this != colonia.slimes[i])
@@ -80,7 +80,7 @@ public class Slime : MonoBehaviour
                     slimesVecinos++;
                 }
             }
-        } 
+        }
 
         if (slimesVecinos > 0)
         {
@@ -102,7 +102,7 @@ public class Slime : MonoBehaviour
 
     public void CalcularFuerzaDeEvasión()
     {
-        if(!EstáEnRiesgoDeColisión())
+        if (!EstáEnRiesgoDeColisión())
         {
             fuerzaDeEvasión = Vector3.zero;
             return;
@@ -118,10 +118,10 @@ public class Slime : MonoBehaviour
         Vector3 position = transform.position;
         Vector3 forward = transform.forward;
 
-        return Physics.SphereCast(position, 
-            config.radioDeColisión, 
-            forward, out hit, 
-            config.distanciaEvasiónDeColisión, 
+        return Physics.SphereCast(position,
+            config.radioDeColisión,
+            forward, out hit,
+            config.distanciaEvasiónDeColisión,
             config.maskObstáculos);
     }
 
@@ -134,12 +134,12 @@ public class Slime : MonoBehaviour
 
         fuerzaDeEvasión = forward;
 
-        for (int i = 0; i < rayDirections.Length; i++)
+        for (int i = 0;i < rayDirections.Length;i++)
         {
             Vector3 dir = transform.TransformDirection(rayDirections[i]);
             Ray ray = new Ray(position, dir);
-            if (!Physics.SphereCast(ray, config.radioDeColisión, 
-                config.distanciaEvasiónDeColisión, 
+            if (!Physics.SphereCast(ray, config.radioDeColisión,
+                config.distanciaEvasiónDeColisión,
                 config.maskObstáculos))
             {
                 return dir;
@@ -152,7 +152,6 @@ public class Slime : MonoBehaviour
     void OnDrawGizmos()
     {
         Vector3[] direcciones = GeneradorDeDirecciones.GenerarDirecciones();
-        // Asegura que solo se genere una vez en editor (opcional)
         if (direcciones == null || direcciones.Length == 0)
             direcciones = GeneradorDeDirecciones.GenerarDirecciones();
 

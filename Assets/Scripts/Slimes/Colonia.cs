@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Colonia : MonoBehaviour
+public class Colonia: MonoBehaviour
 {
     public static Colonia Instancia { get; private set; }
 
@@ -28,11 +28,42 @@ public class Colonia : MonoBehaviour
             return;
         }
         Instancia = this;
+    }
 
-        for (int i = 0; i < cantidadDeSlimes; i++)
+    private void Start()
+    {
+        AjustarCantidadDeSlimes();
+        InvokeRepeating(nameof(AjustarCantidadDeSlimes), 2f, 2f);
+    }
+
+    private void AjustarCantidadDeSlimes()
+    {
+        slimes.RemoveAll(slime => slime == null);
+
+        int slimesActuales = slimes.Count;
+
+        if (slimesActuales < cantidadDeSlimes)
         {
-            InstanciarSlime();
+            int slimesPorInstanciar = cantidadDeSlimes - slimesActuales;
+            for (int i = 0;i < slimesPorInstanciar;i++)
+            {
+                InstanciarSlime();
+            }
         }
+        else if (slimesActuales > cantidadDeSlimes)
+        {
+            int slimesPorEliminar = slimesActuales - cantidadDeSlimes;
+            for (int i = 0;i < slimesPorEliminar;i++)
+            {
+                if (slimes.Count > 0)
+                {
+                    Slime slimeAEliminar = slimes[slimes.Count - 1];
+                    slimes.RemoveAt(slimes.Count - 1);
+                    Destroy(slimeAEliminar.gameObject);
+                }
+            }
+        }
+
     }
 
     public void InstanciarSlime()
@@ -48,8 +79,7 @@ public class Colonia : MonoBehaviour
             0f
         );
 
-        Slime nuevoSlime = Instantiate(slimePrefab, posicion, rotación).GetComponent<Slime>();
+        Slime nuevoSlime = Instantiate(slimePrefab, posicion, rotación, this.transform).GetComponent<Slime>();
         slimes.Add(nuevoSlime);
     }
-
 }
