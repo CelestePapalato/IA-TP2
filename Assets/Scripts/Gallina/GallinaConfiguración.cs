@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SlimeConfiguración", menuName = "Scriptable Objects/Slime Configuración")]
+[CreateAssetMenu(fileName = "SlimeConfiguración", menuName = "Scriptable Objects/Gallina Configuración")]
 public class SlimeConfiguración : ScriptableObject
 {
     [Header("Movimiento")]

@@ -11,12 +11,12 @@ public class Colonia: MonoBehaviour
     [SerializeField]
     public float tamañoDelEspacio = 50f;
     [SerializeField]
-    private Slime slimePrefab;
+    private Gallina slimePrefab;
     [SerializeField]
     private Transform objetivo;
 
     [Header("No tocar")]
-    public List<Slime> slimes = new List<Slime>();
+    public List<Gallina> slimes = new List<Gallina>();
 
     public Transform Objetivo { get => objetivo; }
 
@@ -57,7 +57,7 @@ public class Colonia: MonoBehaviour
             {
                 if (slimes.Count > 0)
                 {
-                    Slime slimeAEliminar = slimes[slimes.Count - 1];
+                    Gallina slimeAEliminar = slimes[slimes.Count - 1];
                     slimes.RemoveAt(slimes.Count - 1);
                     Destroy(slimeAEliminar.gameObject);
                 }
@@ -79,7 +79,7 @@ public class Colonia: MonoBehaviour
             0f
         );
 
-        Slime nuevoSlime = Instantiate(slimePrefab, posicion, rotación, this.transform).GetComponent<Slime>();
+        Gallina nuevoSlime = Instantiate(slimePrefab, posicion, rotación, this.transform).GetComponent<Gallina>();
         slimes.Add(nuevoSlime);
     }
 }

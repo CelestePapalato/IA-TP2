@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Slime: MonoBehaviour
+public class Gallina: MonoBehaviour
 {
     [SerializeField]
     SlimeConfiguración config;
