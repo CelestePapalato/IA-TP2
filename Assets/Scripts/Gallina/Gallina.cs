@@ -3,7 +3,7 @@ using UnityEngine;
 public class Gallina: MonoBehaviour
 {
     [SerializeField]
-    SlimeConfiguración config;
+    GallinaConfiguración config;
 
     [SerializeField]
     private Vector3 fuerzaDeSeparacion = Vector3.zero;

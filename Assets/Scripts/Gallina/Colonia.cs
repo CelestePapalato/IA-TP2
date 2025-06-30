@@ -7,7 +7,7 @@ public class Colonia: MonoBehaviour
 
     [Header("Configuración del Cardumen")]
     [SerializeField]
-    private int cantidadDeSlimes = 50;
+    private int cantidadDeGallinas = 50;
     [SerializeField]
     public float tamañoDelEspacio = 50f;
     [SerializeField]
@@ -32,27 +32,27 @@ public class Colonia: MonoBehaviour
 
     private void Start()
     {
-        AjustarCantidadDeSlimes();
-        InvokeRepeating(nameof(AjustarCantidadDeSlimes), 2f, 2f);
+        AjustarCantidadDeGallinas();
+        InvokeRepeating(nameof(AjustarCantidadDeGallinas), 2f, 2f);
     }
 
-    private void AjustarCantidadDeSlimes()
+    private void AjustarCantidadDeGallinas()
     {
         slimes.RemoveAll(slime => slime == null);
 
         int slimesActuales = slimes.Count;
 
-        if (slimesActuales < cantidadDeSlimes)
+        if (slimesActuales < cantidadDeGallinas)
         {
-            int slimesPorInstanciar = cantidadDeSlimes - slimesActuales;
+            int slimesPorInstanciar = cantidadDeGallinas - slimesActuales;
             for (int i = 0;i < slimesPorInstanciar;i++)
             {
-                InstanciarSlime();
+                InstanciarGallina();
             }
         }
-        else if (slimesActuales > cantidadDeSlimes)
+        else if (slimesActuales > cantidadDeGallinas)
         {
-            int slimesPorEliminar = slimesActuales - cantidadDeSlimes;
+            int slimesPorEliminar = slimesActuales - cantidadDeGallinas;
             for (int i = 0;i < slimesPorEliminar;i++)
             {
                 if (slimes.Count > 0)
@@ -66,7 +66,7 @@ public class Colonia: MonoBehaviour
 
     }
 
-    public void InstanciarSlime()
+    public void InstanciarGallina()
     {
         Vector3 posicion = new Vector3(
             Random.Range(-tamañoDelEspacio / 2f, tamañoDelEspacio / 2f),
@@ -79,7 +79,7 @@ public class Colonia: MonoBehaviour
             0f
         );
 
-        Gallina nuevoSlime = Instantiate(slimePrefab, posicion, rotación, this.transform).GetComponent<Gallina>();
-        slimes.Add(nuevoSlime);
+        Gallina nuevoGallina = Instantiate(slimePrefab, posicion, rotación, this.transform).GetComponent<Gallina>();
+        slimes.Add(nuevoGallina);
     }
 }

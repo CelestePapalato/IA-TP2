@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SlimeConfiguración", menuName = "Scriptable Objects/Gallina Configuración")]
-public class SlimeConfiguración : ScriptableObject
+[CreateAssetMenu(fileName = "GallinaConfiguración", menuName = "Scriptable Objects/Gallina Configuración")]
+public class GallinaConfiguración : ScriptableObject
 {
     [Header("Movimiento")]
     public float rapidez = 4;
