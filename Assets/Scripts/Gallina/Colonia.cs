@@ -11,12 +11,12 @@ public class Colonia: MonoBehaviour
     [SerializeField]
     public float tamañoDelEspacio = 50f;
     [SerializeField]
-    private Gallina slimePrefab;
+    private Gallina gallinaPrefab;
     [SerializeField]
     private Transform objetivo;
 
     [Header("No tocar")]
-    public List<Gallina> slimes = new List<Gallina>();
+    public List<Gallina> gallinas = new List<Gallina>();
 
     public Transform Objetivo { get => objetivo; }
 
@@ -38,28 +38,28 @@ public class Colonia: MonoBehaviour
 
     private void AjustarCantidadDeGallinas()
     {
-        slimes.RemoveAll(slime => slime == null);
+        gallinas.RemoveAll(gallina => gallina == null);
 
-        int slimesActuales = slimes.Count;
+        int gallinasActuales = gallinas.Count;
 
-        if (slimesActuales < cantidadDeGallinas)
+        if (gallinasActuales < cantidadDeGallinas)
         {
-            int slimesPorInstanciar = cantidadDeGallinas - slimesActuales;
-            for (int i = 0;i < slimesPorInstanciar;i++)
+            int gallinasPorInstanciar = cantidadDeGallinas - gallinasActuales;
+            for (int i = 0;i < gallinasPorInstanciar;i++)
             {
                 InstanciarGallina();
             }
         }
-        else if (slimesActuales > cantidadDeGallinas)
+        else if (gallinasActuales > cantidadDeGallinas)
         {
-            int slimesPorEliminar = slimesActuales - cantidadDeGallinas;
-            for (int i = 0;i < slimesPorEliminar;i++)
+            int gallinasPorEliminar = gallinasActuales - cantidadDeGallinas;
+            for (int i = 0;i < gallinasPorEliminar;i++)
             {
-                if (slimes.Count > 0)
+                if (gallinas.Count > 0)
                 {
-                    Gallina slimeAEliminar = slimes[slimes.Count - 1];
-                    slimes.RemoveAt(slimes.Count - 1);
-                    Destroy(slimeAEliminar.gameObject);
+                    Gallina gallinasAEliminar = gallinas[gallinas.Count - 1];
+                    gallinas.RemoveAt(gallinas.Count - 1);
+                    Destroy(gallinasAEliminar.gameObject);
                 }
             }
         }
@@ -79,7 +79,7 @@ public class Colonia: MonoBehaviour
             0f
         );
 
-        Gallina nuevoGallina = Instantiate(slimePrefab, posicion, rotación, this.transform).GetComponent<Gallina>();
-        slimes.Add(nuevoGallina);
+        Gallina nuevoGallina = Instantiate(gallinaPrefab, posicion, rotación, this.transform).GetComponent<Gallina>();
+        gallinas.Add(nuevoGallina);
     }
 }

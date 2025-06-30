@@ -58,18 +58,18 @@ public class Gallina: MonoBehaviour
         Vector3 separaciónSuma = Vector3.zero;
         Vector3 posicionesSuma = Vector3.zero;
         Vector3 alineacionSuma = Vector3.zero;
-        int slimesVecinos = 0;
+        int gallinasVecinas = 0;
 
-        for (int i = 0;i < colonia.slimes.Count;i++)
+        for (int i = 0;i < colonia.gallinas.Count;i++)
         {
 
-            if (this != colonia.slimes[i])
+            if (this != colonia.gallinas[i])
             {
-                Vector3 posiciónVecino = colonia.slimes[i].transform.position;
+                Vector3 posiciónVecino = colonia.gallinas[i].transform.position;
                 float sqrDistanciaVecino = (transform.position - posiciónVecino).sqrMagnitude;
 
                 posicionesSuma += posiciónVecino;
-                alineacionSuma += colonia.slimes[i].transform.forward;
+                alineacionSuma += colonia.gallinas[i].transform.forward;
 
                 if (sqrDistanciaVecino < config.sqrDistanciaSeparación)
                 {
@@ -77,16 +77,16 @@ public class Gallina: MonoBehaviour
                     escala = 1 - escala;
                     separaciónSuma += -(posiciónVecino - transform.position).normalized / escala;
 
-                    slimesVecinos++;
+                    gallinasVecinas++;
                 }
             }
         }
 
-        if (slimesVecinos > 0)
+        if (gallinasVecinas > 0)
         {
-            fuerzaDeSeparacion = separaciónSuma / slimesVecinos;
-            fuerzaDeCohesion = (posicionesSuma / colonia.slimes.Count) - transform.position;
-            fuerzaDeAlineacion = alineacionSuma / colonia.slimes.Count;
+            fuerzaDeSeparacion = separaciónSuma / gallinasVecinas;
+            fuerzaDeCohesion = (posicionesSuma / colonia.gallinas.Count) - transform.position;
+            fuerzaDeAlineacion = alineacionSuma / colonia.gallinas.Count;
         }
         else
         {
